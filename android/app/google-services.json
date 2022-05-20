@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "361738595332",
+    "project_id": "muraita-test",
+    "storage_bucket": "muraita-test.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:361738595332:android:fa11c53a375a9b9d26d951",
+        "android_client_info": {
+          "package_name": "com.example.muraita_apps"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "361738595332-lo4tcaf7o51nsj6gvmhu300tfo9g3d03.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBPC1xt7-5OsLZtlRVoZM_xBGkj7jN_Rns"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "361738595332-lo4tcaf7o51nsj6gvmhu300tfo9g3d03.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "361738595332-7vl0erdkooe45ev04f0s91fc1g7uc6f6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.muraitaApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
