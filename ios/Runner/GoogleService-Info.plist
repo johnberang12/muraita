@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>361738595332-9irhv18qbkaqkvo86stjipm4833lnhe1.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.361738595332-9irhv18qbkaqkvo86stjipm4833lnhe1</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBWD_N0xPjFPClr2QviQf7ClCZxqNbbvF4</string>
+	<key>GCM_SENDER_ID</key>
+	<string>361738595332</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.muraitaApps</string>
+	<key>PROJECT_ID</key>
+	<string>muraita-test</string>
+	<key>STORAGE_BUCKET</key>
+	<string>muraita-test.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:361738595332:ios:5fb9e5524617339326d951</string>
+</dict>
+</plist>

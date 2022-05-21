@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:muraita_apps/signup_pages/registration_page.dart';
 import 'package:muraita_apps/widget/primary_button.dart';
 
 import '../constants.dart';
@@ -53,7 +54,12 @@ class IntroductoryPage extends StatelessWidget {
                       height: height*.06,
                       width: double.infinity,
                       buttonText: 'Get started',
-                      onTap: (){},
+                      onTap: (){
+                        Navigator.push(
+                          context, MaterialPageRoute(
+                          builder: (context) => RegistrationPage(),
+                        ));
+                      },
                   ),
                 ],
               ),
