@@ -11,7 +11,7 @@ class PrimaryButton extends StatelessWidget {
 
   late double height, width;
   String buttonText;
-  VoidCallback onTap;
+  VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
