@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 
-class PrimaryButton extends StatelessWidget {
-   PrimaryButton({
+class CustomPrimaryButton extends StatelessWidget {
+    CustomPrimaryButton({
     Key? key,
-    required this.height,
-    required this.width,
-    required this.buttonText,
-    required this.onTap,
+     this.height = 45,
+     this.width = double.infinity,
+     this.child,
+     this.onPressed,
   }) : super(key: key);
 
-  late double height, width;
-  String buttonText;
-  VoidCallback? onTap;
+  late double? height, width;
+  final Widget? child;
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -19,8 +19,8 @@ class PrimaryButton extends StatelessWidget {
       height: height,
       width: width,
       child: ElevatedButton(
-        child: Text('$buttonText'),
-        onPressed: onTap,
+        onPressed: onPressed,
+        child: child,
       ),
     );
   }

@@ -12,8 +12,14 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Muraita App',
       theme: ThemeData(
-
         primarySwatch: Colors.amber,
+        // textTheme:  TextTheme(
+        //   headline1: TextStyle(color: kBlack80),
+        //   headline2: TextStyle(color: kBlack80),
+        //   bodyText2: TextStyle(color: kBlack60),
+        //
+        // ),
+
       ),
       home:  IntroductoryPage(),
     );

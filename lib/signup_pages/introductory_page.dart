@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:muraita_apps/signup_pages/registration_page.dart';
-import 'package:muraita_apps/widget/primary_button.dart';
+import 'package:muraita_apps/signup_pages/number_registration.dart';
+import 'package:muraita_apps/signup_pages/signup_widgets/signup_button.dart';
+import 'package:muraita_apps/widget/custom_primary_button.dart';
 
 import '../constants.dart';
 import '../widget/app_icon.dart';
@@ -50,14 +51,14 @@ class IntroductoryPage extends StatelessWidget {
                       ),
                   ),
                   SizedBox(height: height*.30,),
-                  PrimaryButton(
+                  SignupButton(
                       height: height*.06,
                       width: double.infinity,
                       buttonText: 'Get started',
                       onTap: (){
                         Navigator.push(
                           context, MaterialPageRoute(
-                          builder: (context) => RegistrationPage(),
+                          builder: (context) => NumberRegistration(),
                         ));
                       },
                   ),

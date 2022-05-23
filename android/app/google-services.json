@@ -7,12 +7,20 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:361738595332:android:fa11c53a375a9b9d26d951",
+        "mobilesdk_app_id": "1:361738595332:android:ea3548363a33df6826d951",
         "android_client_info": {
           "package_name": "com.example.muraita_apps"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "361738595332-ifl3e4c54v6716rcaf0cvauhkdtgimhp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.muraita_apps",
+            "certificate_hash": "6ac55766af39c3e46233c985f774bde65769b5d0"
+          }
+        },
         {
           "client_id": "361738595332-lo4tcaf7o51nsj6gvmhu300tfo9g3d03.apps.googleusercontent.com",
           "client_type": 3

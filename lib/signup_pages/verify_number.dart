@@ -2,13 +2,14 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:muraita_apps/constants.dart';
+import 'package:muraita_apps/signup_pages/signup_widgets/signup_button.dart';
 import 'package:muraita_apps/widget/inactive_button.dart';
-import 'package:muraita_apps/widget/primary_button.dart';
 
 import '../screens/home_screen.dart';
 
 class VerifyNumber extends StatefulWidget {
-  const VerifyNumber({Key? key}) : super(key: key);
+   VerifyNumber({Key? key}) : super(key: key);
+  bool isMount = true;
 
   @override
   State<VerifyNumber> createState() => _VerifyNumberState();
@@ -24,14 +25,26 @@ class _VerifyNumberState extends State<VerifyNumber> {
   Timer? _timer;
   bool _timerIsDone = false;
 
+
   @override
-  initState(){
-    _startTimer();
+  void initState(){
     super.initState();
+    if(mounted){
+      _startTimer();
+    }
+
+  }
+
+  @override
+  void dispose(){
+    _timer?.cancel();
+    super.dispose();
+    _stopTimer();
   }
 
   void _startTimer(){
     _timer = Timer.periodic(const Duration(milliseconds: 300), (_) {
+      if(!mounted) return;
 
       setState((){
         if(_minutes == 0 && _seconds < 1) {
@@ -87,7 +100,7 @@ class _VerifyNumberState extends State<VerifyNumber> {
               ),
               SizedBox(height: height*.02,),
               _timerIsDone == true ?
-                  PrimaryButton(
+                  SignupButton(
                       height: height*.06,
                       width: double.infinity,
                       buttonText: 'Re-send code',
@@ -110,7 +123,7 @@ class _VerifyNumberState extends State<VerifyNumber> {
               ),
               SizedBox(height: height*.06,),
               _confirmationCode == _inputValue ?
-              PrimaryButton(
+              SignupButton(
                   height: height*.06,
                   width: double.infinity,
                   buttonText: 'Confirm Number',
@@ -119,8 +132,8 @@ class _VerifyNumberState extends State<VerifyNumber> {
                     Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => HomeScreen()),
-                    ModalRoute.withName('/'));
+                            builder: (context) => HomeScreen()),
+                        ModalRoute.withName('/'));
                   }
               ) :
               InactiveButton(
