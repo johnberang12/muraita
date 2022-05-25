@@ -80,9 +80,13 @@ dependencies {
         // When using the BoM, you don't specify versions in Firebase library dependencies
         implementation 'com.google.firebase:firebase-auth'
 
+
     // Add the dependency for the Firebase SDK for Google Analytics
     // When using the BoM, don't specify versions in Firebase dependencies
     implementation 'com.google.firebase:firebase-analytics'
+
+    //from phone auth
+    implementation "androidx.browser:browser:1.4.0"
 
 
 }

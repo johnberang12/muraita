@@ -20,7 +20,7 @@ class InactiveButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: null,
         style: ElevatedButton.styleFrom(
-          primary: kBlack40
+          primary: kPrimaryTint40
         ),
         child: Text(buttonText),
       ),

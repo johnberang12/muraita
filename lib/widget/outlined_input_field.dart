@@ -14,6 +14,8 @@ class OutlinedInputField extends StatelessWidget {
       this.onChanged,
      this.prefix,
      this.maxLength,
+     required this.textAlign,
+     this.onSubmitted,
 
   }) :  assert(height != null),
         assert(controller != null),
@@ -30,6 +32,8 @@ class OutlinedInputField extends StatelessWidget {
   final void Function(String)? onChanged;
   final Widget? prefix;
   final int? maxLength;
+  final TextAlign textAlign;
+  final void Function(String)? onSubmitted;
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +41,7 @@ class OutlinedInputField extends StatelessWidget {
       height: height,
       width: double.infinity,
       child: TextFormField(
+        textAlign: textAlign,
         enableSuggestions: false,
         controller: controller,
         keyboardType: keyboardType,
@@ -53,6 +58,7 @@ class OutlinedInputField extends StatelessWidget {
             )
         ),
         onChanged: onChanged,
+        onFieldSubmitted: onSubmitted,
       ),
     );
   }
