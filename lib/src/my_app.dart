@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:muraita_apps/constants.dart';
-
-import '../signup_pages/introductory_page.dart';
+import 'package:muraita_apps/src/landing_page.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -13,15 +12,15 @@ class MyApp extends StatelessWidget {
       title: 'Muraita App',
       theme: ThemeData(
         primarySwatch: Colors.amber,
-        // textTheme:  TextTheme(
-        //   headline1: TextStyle(color: kBlack80),
-        //   headline2: TextStyle(color: kBlack80),
-        //   bodyText2: TextStyle(color: kBlack60),
-        //
-        // ),
+        textTheme:  TextTheme(
+          headline1: TextStyle(color: kBlack80),
+          headline2: TextStyle(color: kBlack80),
+          bodyText2: TextStyle(color: kBlack60),
+
+        ),
 
       ),
-      home:  IntroductoryPage(),
+      home:  LandingPage(),
     );
   }
 }
