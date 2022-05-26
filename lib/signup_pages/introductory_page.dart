@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:muraita_apps/signup_pages/number_registration.dart';
 import 'package:muraita_apps/signup_pages/signup_widgets/signup_button.dart';
-import 'package:muraita_apps/widget/custom_primary_button.dart';
 
+import '../common_widgets/app_icon.dart';
 import '../constants.dart';
-import '../widget/app_icon.dart';
 
 class IntroductoryPage extends StatelessWidget {
-   IntroductoryPage({Key? key}) : super(key: key);
+   IntroductoryPage({Key? key,}) : super(key: key);
 
    late  double height, width;
 

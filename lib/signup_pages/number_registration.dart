@@ -1,43 +1,43 @@
-import 'package:firebase_core/firebase_core.dart';
+
 import 'package:flutter/material.dart';
+import 'package:muraita_apps/common_widgets/alert_dialog.dart';
 import 'package:muraita_apps/constants.dart';
 import 'package:muraita_apps/signup_pages/signup_widgets/signup_button.dart';
 import 'package:muraita_apps/signup_pages/verify_number.dart';
-import 'package:muraita_apps/widget/inactive_button.dart';
+import 'package:muraita_apps/validators/string_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
 
-import '../widget/error_warning.dart';
-import '../widget/outlined_input_field.dart';
+import '../common_widgets/error_warning.dart';
+import '../common_widgets/exception_alert_dialog.dart';
+import '../common_widgets/outlined_input_field.dart';
+import '../services/auth.dart';
 
-class NumberRegistration extends StatefulWidget {
+
+
+class NumberRegistration extends StatefulWidget with PhoneAndNameValidators {
    NumberRegistration({Key? key}) : super(key: key);
+
 
   @override
   State<NumberRegistration> createState() => _NumberRegistrationState();
 }
 
 class _NumberRegistrationState extends State<NumberRegistration> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  final _auth = FirebaseAuth.instance;
 
 
-
-   final _numberController = TextEditingController();
-
-
-
-  var _isLoading = false;
-  var _isLoginScreen = true;
+  final _numberController = TextEditingController();
   var _verificationCode = '';
-
 
   late double height, width;
   final int _inputLength = 10;
   String _phoneNumber = '';
-  bool _numberIsValid = true;
-  String _errorMessage = 'Invalid phone number';
+  bool _isLoading = false;
 
 
-    late FocusNode _focus;
+  late FocusNode _focus;
 
   ///TODO
   ///countryCode
@@ -63,6 +63,7 @@ class _NumberRegistrationState extends State<NumberRegistration> {
   void dispose(){
     super.dispose();
     _numberController;
+    _focus.dispose();
   }
 
 
@@ -71,6 +72,8 @@ class _NumberRegistrationState extends State<NumberRegistration> {
   Widget build(BuildContext context) {
     height = MediaQuery.of(context).size.height;
     width = MediaQuery.of(context).size.width;
+
+    bool submitEnabled = widget.phoneValidator.phoneIsValid(_numberController.text.length) && !_isLoading;
     return SafeArea(
       child: Scaffold(
         body: Center(
@@ -82,11 +85,10 @@ class _NumberRegistrationState extends State<NumberRegistration> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text('Welcome',
-                    style: kHeadline1Style,
-                    ),
+                    _buildHeader(),
+
                     SizedBox(height: height*.05,),
-                     Text('Please signin using your phone number.',
+                     Text('Please register using your phone number.',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: height*.025
@@ -99,17 +101,8 @@ class _NumberRegistrationState extends State<NumberRegistration> {
                       ),
                     ),
                     SizedBox(height: height*.10,),
-                    Visibility(
-                      visible: _numberIsValid == false,
-                      child: ErrorWarning(
-                          height: height*.06,
-                        colour: Theme.of(context).errorColor,
-                        errorText: _errorMessage,
-                      ),
-                    ),
 
 
-                    SizedBox(height: height*.02,),
                     OutlinedInputField(
                       textAlign: TextAlign.start,
                       height: height*.065,
@@ -131,36 +124,23 @@ class _NumberRegistrationState extends State<NumberRegistration> {
                           }
                       ),
                       onChanged: (value){
-                        setState((){
-                          _phoneNumber = value;
-
-                        });
-                      },
-                      onSubmitted: (value){
-                        _phoneNumber = value;
+                        setState((){_phoneNumber = value;});
                       },
                       maxLength: _inputLength,
                     ),
 
                     SizedBox(height: height*.03,),
 
-                  _inputLength == _phoneNumber.length ?
-                  SignupButton(
-                        height: height*.06,
-                        width: double.infinity,
-                        buttonText: 'Verify Number',
-                        onTap: (){
-                          _phoneNumber = _numberController.text;
-                          print('$selectedCountry$_phoneNumber');
-                          _verifyNumber();
-                          _numberIsValid = true;
-                        }
-                    ) :
-                    InactiveButton(
-                        height: height*.06,
-                        width: double.infinity,
-                        buttonText: 'Verify Number',
-                    ),
+                            SignupButton(
+                                  height: height*.06,
+                                  width: double.infinity,
+                                  buttonText: 'Verify Number',
+                                  onTap: submitEnabled && !_isLoading? (){
+                                    _verifyNumber();
+                                    _isLoading = true;
+                                  } : null
+                              ) ,
+
                   ],
                 ),
 
@@ -173,40 +153,68 @@ class _NumberRegistrationState extends State<NumberRegistration> {
   }
 
   Future<void> _verifyNumber()async {
-  _auth.verifyPhoneNumber(
-      phoneNumber: '$selectedCountry$_phoneNumber',
-      verificationCompleted: (PhoneAuthCredential credential) async {
-        await _auth.signInWithCredential(credential).then((value) {
-          print('You are logged in successfully');
 
-        });
-      },
-      verificationFailed: (FirebaseAuthException exception){
-        setState((){
-          _numberIsValid = false;
-        });
+    try{
+      _auth.verifyPhoneNumber(
+          phoneNumber: '$selectedCountry$_phoneNumber',
+          verificationCompleted: (PhoneAuthCredential credential) async {
+                await _auth.signInWithCredential(credential).then((value) {
 
-        print(exception.message);
-        _errorMessage = exception.message!;
-        print('error error error error error');
+                  setState(() => _isLoading = false);
 
-      },
-      codeSent: (String verificationID, int? resendToken){
-        print('Code sent code sent code sent code sent');
-        setState((){
-          _verificationCode = verificationID;
-        });
-        Navigator.push(context, MaterialPageRoute(
-          builder: (context) => VerifyNumber(verificationCode: _verificationCode, verifyNumber: _verifyNumber),
-        ));
-      },
-      codeAutoRetrievalTimeout: (String verificationID){
+                });
+              },
 
-      }
-  );
+          verificationFailed: (FirebaseAuthException exception){
+            setState(() => _isLoading = false);
+              showExceptionAlertDialog(
+                context,
+                title: 'Sign in failed',
+                exception: exception,
+              );
+
+          },
+          codeSent: (String verificationID, int? resendToken){
+              _verificationCode = verificationID;
+              setState(() => _isLoading = false);
+              Navigator.push(context, MaterialPageRoute(
+                builder: (context) => VerifyNumber(
+                    verificationCode: _verificationCode,
+                    verifyNumber: _verifyNumber
+                ),
+              ));
+          },
+          codeAutoRetrievalTimeout: (String verificationID){},
+          // timeout: const Duration(seconds: 120),
+      );
+    } on FirebaseAuthException catch(e){
+      setState((){
+        showExceptionAlertDialog(
+          context,
+          title: 'Sign in failed',
+          exception: e,
+        );
+      });
+    } finally {
+      setState((){
+        _isLoading = false;
+      });
+    }
+
+
   }
 
 
+  Widget _buildHeader(){
+    if(_isLoading){
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+    return const Text('Welcome',
+      style: kHeadline1Style,
+    );
+  }
 
 }
 

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:muraita_apps/widget/custom_primary_button.dart';
+
+import '../../common_widgets/custom_primary_button.dart';
+
 
 class SignupButton extends CustomPrimaryButton {
   SignupButton({

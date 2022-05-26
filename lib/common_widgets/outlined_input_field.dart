@@ -13,6 +13,7 @@ class OutlinedInputField extends StatelessWidget {
       this.labelText,
       this.onChanged,
      this.prefix,
+     this.errorText,
      this.maxLength,
      required this.textAlign,
      this.onSubmitted,
@@ -31,6 +32,7 @@ class OutlinedInputField extends StatelessWidget {
   final String? labelText;
   final void Function(String)? onChanged;
   final Widget? prefix;
+  final String? errorText;
   final int? maxLength;
   final TextAlign textAlign;
   final void Function(String)? onSubmitted;
@@ -51,6 +53,7 @@ class OutlinedInputField extends StatelessWidget {
         decoration:  InputDecoration(
           counterText: '',
           prefix: prefix,
+            errorText: errorText,
             isDense: true,
             labelText: labelText,
             border: const OutlineInputBorder(

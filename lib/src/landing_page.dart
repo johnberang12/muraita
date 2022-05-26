@@ -2,22 +2,35 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:muraita_apps/screens/home_screen.dart';
 import 'package:muraita_apps/signup_pages/introductory_page.dart';
+import 'package:provider/provider.dart';
+import '../services/auth.dart';
+import '../services/auth_provider.dart';
 
-class LandingPage extends StatefulWidget {
-  const LandingPage({Key? key}) : super(key: key);
+class LandingPage extends StatelessWidget {
 
-  @override
-  State<LandingPage> createState() => _LandingPageState();
-}
 
-class _LandingPageState extends State<LandingPage> {
 
-  late User _user;
   @override
   Widget build(BuildContext context) {
-    if(_user == null){
-      return IntroductoryPage();
-    }
-      return HomeScreen();
+    final auth = Provider.of<AuthBase>(context, listen: false);
+     return StreamBuilder<User?>(
+       stream: auth.authStateChanges(),
+       builder: (context, snapshot) {
+         if(snapshot.connectionState == ConnectionState.active){
+           final User? user = snapshot.data;
+           if(user == null){
+             return IntroductoryPage();
+           }
+           return HomeScreen();
+         }
+         return const Scaffold(
+           body: Center(
+             child: CircularProgressIndicator(),
+           )
+         );
+       },
+     );
+
+
   }
 }
