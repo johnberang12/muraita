@@ -28,11 +28,15 @@ class NonEmptyStringValidator extends StringValidator {
   }
 }
 
-class PhoneAndNameValidators {
+class PhoneNumberValidator {
   final StringValidator phoneValidator = NonEmptyStringValidator();
-  final StringValidator nameValidator = NonEmptyStringValidator();
 }
 
 class CodeValidator {
   final StringValidator codeValidator = NonEmptyStringValidator();
+}
+
+class NameValidator {
+  final StringValidator nameValidator = NonEmptyStringValidator();
+  final String invalidNameError = 'Name should have at least 4 characters in minimum.';
 }

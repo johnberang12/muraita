@@ -16,7 +16,7 @@ class OutlinedInputField extends StatelessWidget {
      this.errorText,
      this.maxLength,
      required this.textAlign,
-     this.onSubmitted,
+     this.onEditingComplete,
 
   }) :  assert(height != null),
         assert(controller != null),
@@ -35,7 +35,7 @@ class OutlinedInputField extends StatelessWidget {
   final String? errorText;
   final int? maxLength;
   final TextAlign textAlign;
-  final void Function(String)? onSubmitted;
+  final VoidCallback? onEditingComplete;
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +61,7 @@ class OutlinedInputField extends StatelessWidget {
             )
         ),
         onChanged: onChanged,
-        onFieldSubmitted: onSubmitted,
+        onEditingComplete: onEditingComplete,
       ),
     );
   }

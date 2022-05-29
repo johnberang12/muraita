@@ -1,10 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:muraita_apps/screens/home_screen.dart';
-import 'package:muraita_apps/signup_pages/introductory_page.dart';
 import 'package:provider/provider.dart';
 import '../services/auth.dart';
 import '../services/auth_provider.dart';
+import '../sign_in/introductory_page.dart';
 
 class LandingPage extends StatelessWidget {
 

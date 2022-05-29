@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'auth.dart';
 
 class AuthProvider extends InheritedWidget {
+
+  //unused.....changed to general provider package.
   AuthProvider({
     required this.child,
     required this.auth,

@@ -1,4 +1,5 @@
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:muraita_apps/common_widgets/alert_dialog.dart';
 import 'package:provider/provider.dart';
@@ -6,9 +7,10 @@ import '../services/auth.dart';
 
 
 class HomeScreen extends StatelessWidget {
-  HomeScreen({Key? key,
+  HomeScreen( {Key? key,
 
   }) : super(key: key);
+
 
 
 
@@ -37,10 +39,12 @@ class HomeScreen extends StatelessWidget {
     }
   }
 
+  User? user;
 
   @override
   Widget build(BuildContext context) {
   print('entered home screen');
+  print('this user is ${user?.displayName}');
     return Scaffold(
       appBar: AppBar(
         title: Text('Home Page'),
