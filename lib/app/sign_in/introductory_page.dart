@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:muraita_apps/sign_in/signin_bloc.dart';
-import 'package:provider/provider.dart';
-
-
-import '../common_widgets/app_icon.dart';
-import '../constants.dart';
+import '../../common_widgets/app_icon.dart';
+import '../../constants.dart';
 import '../sign_in/signin_widgets/signup_button.dart';
 import 'number_registration.dart';
+
 
 class IntroductoryPage extends StatelessWidget {
    IntroductoryPage({Key? key}) : super(key: key);
@@ -17,6 +14,7 @@ class IntroductoryPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('entered introductory page');
   height = MediaQuery.of(context).size.height;
   width = MediaQuery.of(context).size.width;
     return SafeArea(
@@ -56,11 +54,10 @@ class IntroductoryPage extends StatelessWidget {
    }
    
    Future<void> _pushToNumberRegistration(context) async {
-    await Future.delayed(const Duration(milliseconds: 1000));
-    const Scaffold(body: Center(child: CircularProgressIndicator(),),);
+
     Navigator.push(
         context, MaterialPageRoute(
-      builder: (context) => NumberRegistration(),
+      builder: (context) => NumberRegistration.create(context),
     ));
    }
    

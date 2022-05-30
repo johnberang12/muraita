@@ -2,11 +2,9 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:muraita_apps/sign_in/signin_bloc.dart';
 import 'package:provider/provider.dart';
 
-import '../screens/home_screen.dart';
-import '../sign_in/name_registration.dart';
+import '../app/sign_in/signin_bloc.dart';
 
 abstract class AuthBase{
   User? get currentUser;

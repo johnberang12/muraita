@@ -48,5 +48,5 @@ app.*.map.json
 
 
 #my retsecs
-/lib/auth/retsec.dart
+/lib/retsec_auth/retsec.dart
 

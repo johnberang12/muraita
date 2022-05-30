@@ -1,10 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:muraita_apps/screens/home_screen.dart';
+import 'package:muraita_apps/services/database.dart';
 import 'package:provider/provider.dart';
+import '../app/home/all_products_page.dart';
+import '../app/sign_in/introductory_page.dart';
+import '../app/sign_in/name_registration.dart';
 import '../services/auth.dart';
-import '../services/auth_provider.dart';
-import '../sign_in/introductory_page.dart';
 
 class LandingPage extends StatelessWidget {
 
@@ -16,18 +17,29 @@ class LandingPage extends StatelessWidget {
      return StreamBuilder<User?>(
        stream: auth.authStateChanges(),
        builder: (context, snapshot) {
-         if(snapshot.connectionState == ConnectionState.active){
-           final User? user = snapshot.data;
-           if(user == null){
+         if(snapshot.connectionState == ConnectionState.waiting){
+           return const Scaffold(
+               body: Center(
+                 child: CircularProgressIndicator(),
+               )
+           );
+         }
+         final User? user = snapshot.data;
+         final name = user?.displayName;
+         print('landing page landing page');
+         print(user?.displayName);
+         if(name != null && name.length > 3){
+           return Provider<Database>(
+               create: (_) => FirestoreDatabase(uid: user?.uid),
+               child: AllProductsPage()
+           );
+         } else {
+           if(user == null) {
              return IntroductoryPage();
            }
-           return HomeScreen();
+           return NameRegistration();
          }
-         return const Scaffold(
-           body: Center(
-             child: CircularProgressIndicator(),
-           )
-         );
+
        },
      );
 

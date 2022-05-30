@@ -1,12 +1,10 @@
 
 import 'dart:async';
-import 'package:country_code_picker/country_code_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:muraita_apps/common_widgets/progress_indicator_dialog.dart';
-import '../common_widgets/exception_alert_dialog.dart';
-import '../screens/home_screen.dart';
-import '../services/auth.dart';
+import '../../common_widgets/exception_alert_dialog.dart';
+import '../../services/auth.dart';
+import '../home/all_products_page.dart';
 import 'name_registration.dart';
 
 class SignInBloc {
@@ -14,44 +12,47 @@ class SignInBloc {
   final AuthBase auth;
   final SignInBloc? bloc;
   final StreamController<bool> _isLoadingController = StreamController<bool>();
+  final StreamController<bool> _isTimerController = StreamController<bool>();
   Stream<bool> get isLoadingStream => _isLoadingController.stream;
+  Stream<bool> get isTimerStream => _isTimerController.stream;
+
+  late int seconds = 60;
+  late int minutes = 1;
+  Timer? timer;
+
 
   void dispose(){
     _isLoadingController.close();
   }
 
   void _setIsLoading(bool isLoading) => _isLoadingController.add(isLoading);
+  void _setTimer(bool timerOn) => _isTimerController.add(timerOn);
 
 
-  Future<void> autoSignInBloc({
+  Future<void> autoVerifyPhone({
     required BuildContext context,
     required String countryCode,
     required String phoneNumber,
-
   }) async {
     try{
       print('entered auto sign in bloc function');
-      _setIsLoading(true);
 
       print('loading stream in auto sign in bloc upon click is => $isLoadingStream');
        await auth.autoRegisterWithPhone(context, countryCode, phoneNumber);
-
     } on Exception catch(exception) {
       _setIsLoading(false);
       bloc?.showSignInError(context, exception);
     rethrow;
     } finally {
       _setIsLoading(false);
-
       print('loading stream in auto sign in bloc at finally is => $isLoadingStream');
     }
   }
 
 
 
-  Future<void> manuallyCompareBloc({
+  Future<void> verifyOtp({
     required BuildContext context,
-
   }) async {
     print('entered manually compate bloc');
     try{
@@ -117,6 +118,25 @@ class SignInBloc {
     }
   }
 
+  Future<void> sendCodeButton(context, {required otpCode}) async {
+    try{
+      auth.catchOtpFromInput(otpCode);
+      await verifyOtp(context:context);
+    } on Exception catch(exception){
+      showSignInError(context, exception);
+    } finally {
+      _setIsLoading(false);
+    }
+  }
+
+
+  Future<void > resendCodeButton(context, {required countryCode, required phoneNumber}) async {
+    await autoVerifyPhone(context: context, countryCode: countryCode, phoneNumber: phoneNumber);
+      seconds = 60;
+      minutes = 1;
+      _setTimer(true);
+  }
+
    _goToRegisterName(context){
     User? user;
     try{
@@ -129,10 +149,9 @@ class SignInBloc {
         return Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(
-                builder: (context) => HomeScreen()),
+                builder: (context) => AllProductsPage()),
                 (Route<dynamic> route) => false);
       }
-
     }  catch(e) {
       print('error from register name function => $e');
     }
@@ -140,6 +159,29 @@ class SignInBloc {
   }
 
 
+  void startTimer() {
+    timer = Timer.periodic(
+        const Duration(seconds: 1), (_) {
+      // if (!mounted) return;
+
+        if (minutes == 0 && seconds < 1) {
+          stopTimer();
+          _setTimer(false);
+        } else {
+          if (seconds > 0) {
+            seconds--;
+          } else {
+            seconds = 59;
+            minutes--;
+          }
+        }
+
+    });
+  }
+
+  void stopTimer() {
+    timer?.cancel();
+  }
 
 
 }

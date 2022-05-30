@@ -30,10 +30,12 @@ class NonEmptyStringValidator extends StringValidator {
 
 class PhoneNumberValidator {
   final StringValidator phoneValidator = NonEmptyStringValidator();
+  final String invalidPhoneError = 'Invalid phone number';
 }
 
 class CodeValidator {
   final StringValidator codeValidator = NonEmptyStringValidator();
+  final String invalidCodeError = 'Invalid otp code';
 }
 
 class NameValidator {
