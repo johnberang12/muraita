@@ -1,4 +1,5 @@
 
 class APIPath {
-  static String product(String uid, String productId) => '/users/$uid/products/$productId';
+  static String listing(String uid, String listingId) => '/users/$uid/listings/$listingId';
+  static String listings(String uid) => 'users/$uid/listings';
 }

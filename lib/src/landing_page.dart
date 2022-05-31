@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:muraita_apps/services/database.dart';
 import 'package:provider/provider.dart';
-import '../app/home/all_products_page.dart';
+import '../app/home/listings/listings_page.dart';
 import '../app/sign_in/introductory_page.dart';
 import '../app/sign_in/name_registration.dart';
 import '../services/auth.dart';
@@ -19,27 +19,24 @@ class LandingPage extends StatelessWidget {
        builder: (context, snapshot) {
          if(snapshot.connectionState == ConnectionState.waiting){
            return const Scaffold(
-               body: Center(
-                 child: CircularProgressIndicator(),
-               )
-           );
-         }
-         final User? user = snapshot.data;
-         final name = user?.displayName;
-         print('landing page landing page');
-         print(user?.displayName);
-         if(name != null && name.length > 3){
-           return Provider<Database>(
-               create: (_) => FirestoreDatabase(uid: user?.uid),
-               child: AllProductsPage()
-           );
+               body: Center(child: CircularProgressIndicator(),));
          } else {
-           if(user == null) {
-             return IntroductoryPage();
+           final User? user = snapshot.data;
+           final name = user?.displayName;
+           print('entered landing page');
+           print('this user is => ${user?.displayName}');
+           if(name != null && name.length > 3){
+             return Provider<Database>(
+                 create: (_) => FirestoreDatabase(uid: user?.uid),
+                 child: ListingsPage()
+             );
+           } else {
+             if(user == null) {
+               return IntroductoryPage();
+             }
+             return NameRegistration();
            }
-           return NameRegistration();
          }
-
        },
      );
 

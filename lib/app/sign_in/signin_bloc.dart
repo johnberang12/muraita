@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../common_widgets/exception_alert_dialog.dart';
 import '../../services/auth.dart';
-import '../home/all_products_page.dart';
+import '../home/listings/listings_page.dart';
 import 'name_registration.dart';
 
 class SignInBloc {
@@ -149,7 +149,7 @@ class SignInBloc {
         return Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(
-                builder: (context) => AllProductsPage()),
+                builder: (context) => ListingsPage()),
                 (Route<dynamic> route) => false);
       }
     }  catch(e) {

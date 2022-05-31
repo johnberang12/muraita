@@ -9,8 +9,7 @@ Future<void>? showExceptionAlertDialog(
     BuildContext context, {
       required String title,
       required Exception exception,
-}
-    ) => showAlertDialog(
+}) => showAlertDialog(
   context,
   title: title,
   content: _message(exception),
