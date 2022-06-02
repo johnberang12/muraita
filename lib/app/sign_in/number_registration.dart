@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:muraita_apps/common_widgets/progress_indicator_dialog.dart';
 import 'package:muraita_apps/constants.dart';
 import 'package:muraita_apps/app/sign_in/number_registration_bloc.dart';
 import 'package:muraita_apps/app/sign_in/signin_widgets/signup_button.dart';
 import 'package:muraita_apps/app/sign_in/otp_verification_page.dart';
 import 'package:muraita_apps/app/sign_in/string_validator.dart';
 import 'package:provider/provider.dart';
-
 import '../../common_widgets/outlined_input_field.dart';
 import 'number_registration_bloc.dart';
 
 
 class NumberRegistration extends StatefulWidget with PhoneNumberValidator {
-  NumberRegistration(BuildContext context, {Key? key}) : super(key: key);
+  NumberRegistration({Key? key}) : super(key: key);
 
 
   static Widget create(BuildContext context) {
@@ -20,7 +18,7 @@ class NumberRegistration extends StatefulWidget with PhoneNumberValidator {
       create: (_) => NumberRegistrationBloc(),
       dispose: (_, bloc) => bloc.dispose(),
       child: Consumer<NumberRegistrationBloc>(
-          builder: (_, bloc, __) => NumberRegistration(context),)
+          builder: (_, bloc, __) => NumberRegistration(),)
     );
   }
 
@@ -76,6 +74,7 @@ class _NumberRegistrationState extends State<NumberRegistration> {
 
   @override
   Widget build(BuildContext context) {
+    print('entered number registration');
     final numBloc = Provider.of<NumberRegistrationBloc>(context, listen: false);
     _height = MediaQuery.of(context).size.height;
     _width = MediaQuery.of(context).size.width;
@@ -137,7 +136,6 @@ class _NumberRegistrationState extends State<NumberRegistration> {
   Widget _phoneNumberTextField(isLoading, phoneIsValid) {
     if(isLoading == true){return const Center(child: CircularProgressIndicator(),);}
 
-
     return OutlinedInputField(
       textAlign: TextAlign.start,
       height: _inputFieldHeight,
@@ -181,8 +179,7 @@ class _NumberRegistrationState extends State<NumberRegistration> {
   }
 
   void _submitPhoneNumber() {
-    Navigator.push(
-        context,
+    Navigator.of(context).push(
         MaterialPageRoute(
             builder: (context) =>
                 OtpVerificationPage.create(

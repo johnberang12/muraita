@@ -6,8 +6,11 @@ import 'package:muraita_apps/app/home/models/listing.dart';
 import 'package:muraita_apps/common_widgets/alert_dialog.dart';
 import 'package:muraita_apps/common_widgets/exception_alert_dialog.dart';
 import 'package:provider/provider.dart';
+import '../../../common_widgets/empty_content.dart';
 import '../../../services/auth.dart';
 import '../../../services/database.dart';
+import 'floating_action_button.dart';
+import '../../../common_widgets/list_item_builder.dart';
 
 
 
@@ -15,64 +18,42 @@ class ListingsPage extends StatelessWidget {
   ListingsPage( {Key? key}) : super(key: key);
 
 
-  _signOut(BuildContext context)async{
-    try{
-      final auth = Provider.of<AuthBase>(context, listen: false);
-     await auth.signOut();
-
-    } catch(e) {
-      print(e);
-    }
-  }
-
-  Future<void> _confirmSignOut(BuildContext context) async {
-    final didRequestSignOut = await showAlertDialog(
-        context,
-        title: 'Logout',
-        content: 'Are you sure you want to logout?',
-        cancelActionText: 'Cancel',
-        defaultActionText: 'Logout',
-    );
-    if(didRequestSignOut == true){
-      _signOut(context);
-    }
-  }
 
 
-  // Future<void> _addListing(BuildContext context) async {
-  //   try{
-  //     final database = Provider.of<Database>(context, listen: false);
-  //     await  database.addListing(Listing(name: 'car', price: 1500));
-  //   } on FirebaseException catch(e) {
-  //     showExceptionAlertDialog(
-  //         context,
-  //         title: 'Operation failed',
-  //         exception: e
-  //     );
-  //   }
-  // }
 
   Widget _buildContent(BuildContext context) {
     final database = Provider.of<Database>(context, listen: false);
     return StreamBuilder<Iterable<Listing?>>(
       stream: database.listingsStream(),
-        builder: (context,  AsyncSnapshot<dynamic> snapshot) {
-        if(snapshot.hasData) {
-          final listings = snapshot.data;
-          print('snapshot data is => ${snapshot.data}');
-          final children = listings.map<Widget>((listing) =>
-              ProductListTile(
+        builder: (context,  snapshot) {
+        return ListItemBuilder<Listing>(
+          snapshot: snapshot,
+          itemBuilder: (context, listing) => Dismissible(
+            key: Key('product-${listing?.id}'),
+            background: Container(color: Theme.of(context).errorColor),
+            direction: DismissDirection.endToStart,
+            onDismissed: (direction) => _delete(context, listing!),
+            child: ProductListTile(
               listing: listing,
-              onTap: () => AddEditListingPage.show(context, listing: listing)
-              )).toList();
-          return ListView(children: children,);
-        }
-        if(snapshot.hasError){
-          return const Center(child: Text('Error fetching data'),);
-        }
-        return const Center(child: CircularProgressIndicator(),);
+              onTap: () => AddEditListingPage.show(context,listing: listing),
+        ),
+          ),
+        );
         }
     );
+  }
+
+  Future<void> _delete(BuildContext context, Listing listing) async {
+    try{
+      final database = Provider.of<Database>(context, listen: false);
+      await database.deleteItem(listing);
+    } on FirebaseException catch(e){
+      showExceptionAlertDialog(
+          context,
+          title: 'Operation failed',
+          exception: e,
+      );
+    }
   }
 
   @override
@@ -82,22 +63,15 @@ class ListingsPage extends StatelessWidget {
   print('this user is ${auth.currentUser?.displayName}');
     return Scaffold(
       appBar: AppBar(
-        title: Text('Home Page'),
-        actions: [
-          TextButton(
-            onPressed: () => _confirmSignOut(context),
-            child: const Text('Log out', style: TextStyle(
-              color: Colors.white,
-            ),),
-          ),
-        ],
+        title: const Text('My listings'),
+
       ),
       body: _buildContent(context),
-      floatingActionButton: FloatingActionButton(
-        onPressed: ()=> AddEditListingPage.show(context),
-        child: const Icon(Icons.add),
-      ),
+      floatingActionButton: FloatingAction(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,
+
     );
+
   }
 
 

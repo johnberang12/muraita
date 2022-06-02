@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../common_widgets/app_icon.dart';
 import '../../constants.dart';
@@ -6,11 +7,14 @@ import 'number_registration.dart';
 
 
 class IntroductoryPage extends StatelessWidget {
-   IntroductoryPage({Key? key}) : super(key: key);
+
+
+
+  static Widget create(BuildContext context) {
+    return IntroductoryPage();
+  }
 
    late  double height, width;
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +60,7 @@ class IntroductoryPage extends StatelessWidget {
    Future<void> _pushToNumberRegistration(context) async {
 
     Navigator.push(
-        context, MaterialPageRoute(
+        context, CupertinoPageRoute(
       builder: (context) => NumberRegistration.create(context),
     ));
    }

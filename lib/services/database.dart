@@ -6,6 +6,7 @@ import '../app/home/models/listing.dart';
 abstract class Database {
 
   Future<void> setListing(Listing listing);
+  Future<void> deleteItem(Listing? listing);
   Stream<Iterable<Listing?>> listingsStream();
 }
 
@@ -25,6 +26,11 @@ class FirestoreDatabase implements Database {
   data: listing.toMap(),
   );
   }
+
+  @override
+  Future<void> deleteItem(Listing? listing) => _service.deleteData(
+      path: APIPath.listing(uid!, listing!.id),
+  );
 
   @override
   Stream<Iterable<Listing?>> listingsStream() => _service.collectionStream(

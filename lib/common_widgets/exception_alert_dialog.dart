@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:muraita_apps/common_widgets/alert_dialog.dart';
 
-
+///////////Generic Custom Widget/////////////////
 Future<void>? showExceptionAlertDialog(
     BuildContext context, {
       required String title,

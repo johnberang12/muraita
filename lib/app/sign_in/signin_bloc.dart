@@ -4,8 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../common_widgets/exception_alert_dialog.dart';
 import '../../services/auth.dart';
-import '../home/listings/listings_page.dart';
-import 'name_registration.dart';
+import '../../src/landing_page.dart';
+
 
 class SignInBloc {
   SignInBloc({required this.auth, this.bloc});
@@ -96,9 +96,8 @@ class SignInBloc {
             print(value);
               print('verification id is ${credential.verificationId}');
               print('smsCode is ${credential.smsCode}');
-              _goToRegisterName(context);
+              _verificationSucceeded(context);
                  })
-
           .whenComplete((){
             print('entered when complete...this is whether or not there is an error.');
                 })
@@ -137,25 +136,10 @@ class SignInBloc {
       _setTimer(true);
   }
 
-   _goToRegisterName(context){
-    User? user;
-    try{
-      if(user?.displayName == null) {
-        return Navigator.push(context, MaterialPageRoute(
-          builder: (context) => NameRegistration(),
-        ));
-      } else {
-
-        return Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(
-                builder: (context) => ListingsPage()),
-                (Route<dynamic> route) => false);
-      }
-    }  catch(e) {
-      print('error from register name function => $e');
-    }
-
+   _verificationSucceeded(BuildContext context){
+     Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+         builder: (context) => LandingPage()),
+             (Route<dynamic> route) => false);
   }
 
 
@@ -163,7 +147,6 @@ class SignInBloc {
     timer = Timer.periodic(
         const Duration(seconds: 1), (_) {
       // if (!mounted) return;
-
         if (minutes == 0 && seconds < 1) {
           stopTimer();
           _setTimer(false);

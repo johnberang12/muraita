@@ -14,7 +14,7 @@ import '../../services/auth.dart';
 
 
 class OtpVerificationPage extends StatefulWidget with CodeValidator{
-   OtpVerificationPage(BuildContext context, {Key? key, required this.phoneNumber, required this.countryCode })
+   OtpVerificationPage({Key? key, required this.phoneNumber, required this.countryCode })
 : super(key: key);
    final String phoneNumber;
    final String countryCode;
@@ -25,7 +25,7 @@ class OtpVerificationPage extends StatefulWidget with CodeValidator{
        create: (_) => SignInBloc(auth: auth,),
        dispose: (_, bloc) => bloc.dispose(),
        child: Consumer<SignInBloc>(
-           builder: (_, bloc, __) =>OtpVerificationPage(context, phoneNumber:phoneNumber, countryCode: countryCode)),
+           builder: (_, bloc, __) =>OtpVerificationPage(phoneNumber:phoneNumber, countryCode: countryCode)),
      );
    }
 
@@ -67,6 +67,7 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
 
   @override
   Widget build(BuildContext context) {
+    print('entered otp verification');
     height = MediaQuery.of(context).size.height;
     width = MediaQuery.of(context).size.width;
     return SafeArea(

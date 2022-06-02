@@ -13,7 +13,7 @@ class AddEditListingPage extends StatefulWidget {
 
   static Future<void> show(BuildContext context, {Listing? listing}) async {
     final database = Provider.of<Database>(context, listen: false);
-    await Navigator.of(context).push(
+    await Navigator.of(context, rootNavigator: true).push(
       MaterialPageRoute(
         builder: (context) => AddEditListingPage(database: database, listing: listing,),
         fullscreenDialog: true,

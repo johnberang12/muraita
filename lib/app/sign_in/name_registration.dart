@@ -13,6 +13,11 @@ import '../../services/auth.dart';
 
 class NameRegistration extends StatefulWidget with NameValidator{
    NameRegistration({Key? key}) : super(key: key);
+   static Widget create(BuildContext context) {
+      return NameRegistration();
+
+   }
+
   @override
   State<NameRegistration> createState() => _NameRegistrationState();
 }
@@ -40,24 +45,21 @@ class _NameRegistrationState extends State<NameRegistration> {
     super.dispose();
   }
 
-  Future<void> _submitName(BuildContext context,nameIsValid) async{
+  void _revertUserToLandingPage(){
+    if(mounted){
+    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+              builder: (context) => LandingPage()),
+                  (Route<dynamic> route) => false);
+    }
+  }
+
+  Future<void> _submitName() async{
     setState(() => _isLoading = true);
     final auth = Provider.of<AuthBase>(context, listen: false);
     try {
-      await auth.currentUser?.updateDisplayName(_name);
-      if(mounted){
-        if(nameIsValid == true) {
-          ///////this is the suspect on the error => Looking up a deactivated widget's ancestor is unsafe//////
-          ///////Looking for a better alternative.//////////////
-          setState((){
-            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
-                builder: (context) => LandingPage()),
-                    (Route<dynamic> route) => false);
-          });
+          await auth.currentUser?.updateDisplayName(_name);
+          _revertUserToLandingPage();
 
-        }
-      }
-      return;
     } on FirebaseAuthException catch (e) {
       showExceptionAlertDialog(
         context,
@@ -118,7 +120,7 @@ class _NameRegistrationState extends State<NameRegistration> {
         height: height * .06,
         width: double.infinity,
         buttonText: 'Done',
-        onTap: nameIsValid ? ()=> _submitName(context, nameIsValid) : null,
+        onTap: nameIsValid ? ()=> _submitName() : null,
       )
     ];
   }
